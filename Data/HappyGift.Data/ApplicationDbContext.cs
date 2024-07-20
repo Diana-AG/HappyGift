@@ -26,6 +26,12 @@
 
         public DbSet<Setting> Settings { get; set; }
 
+        public DbSet<Gift> Gifts { get; set; }
+
+        public DbSet<Vote> Votes { get; set; }
+
+        public DbSet<VoteCast> VoteCasts { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
