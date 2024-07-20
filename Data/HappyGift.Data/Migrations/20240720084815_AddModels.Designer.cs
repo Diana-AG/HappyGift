@@ -4,6 +4,7 @@ using HappyGift.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HappyGift.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240720084815_AddModels")]
+    partial class AddModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,7 +170,7 @@ namespace HappyGift.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Gifts", (string)null);
+                    b.ToTable("Gifts");
                 });
 
             modelBuilder.Entity("HappyGift.Data.Models.Setting", b =>
@@ -200,7 +203,7 @@ namespace HappyGift.Data.Migrations
 
                     b.HasIndex("IsDeleted");
 
-                    b.ToTable("Settings", (string)null);
+                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("HappyGift.Data.Models.Vote", b =>
@@ -235,7 +238,7 @@ namespace HappyGift.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Votes", (string)null);
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("HappyGift.Data.Models.VoteCast", b =>
@@ -269,7 +272,7 @@ namespace HappyGift.Data.Migrations
 
                     b.HasIndex("VoteId");
 
-                    b.ToTable("VoteCasts", (string)null);
+                    b.ToTable("VoteCasts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
