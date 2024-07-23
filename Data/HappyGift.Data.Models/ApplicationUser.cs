@@ -3,6 +3,7 @@ namespace HappyGift.Data.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     using HappyGift.Data.Common.Models;
@@ -31,11 +32,12 @@ namespace HappyGift.Data.Models
 
         public DateTime? DeletedOn { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public DateTime BirthDate { get; set; }
 
-        [InverseProperty(nameof(Vote.StartedByUser))]
+        [InverseProperty(nameof(Vote.ForUser))]
         public virtual ICollection<Vote> Votes { get; set; }
 
         [InverseProperty(nameof(VoteCast.User))]

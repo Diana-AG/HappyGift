@@ -14,15 +14,17 @@
             this.VotesCast = new HashSet<VoteCast>();
         }
 
-        public string UserId { get; set; }
+        public string ForUserId { get; set; }
 
-        public virtual ApplicationUser User { get; set; }
+        public virtual ApplicationUser ForUser { get; set; }
 
         public string StartedByUserId { get; set; }
 
         public virtual ApplicationUser StartedByUser { get; set; }
 
         public bool IsActive { get; set; }
+
+        public DateTime ForBirthdayDate { get; set; }
 
         public DateTime? EndedAt
         {
