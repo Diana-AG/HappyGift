@@ -65,12 +65,12 @@
             return votes;
         }
 
-        public async Task<VoteViewModel> GetVoteResultsAsync(int voteId)
+        public async Task<VoteDetailsViewModel> GetVoteResultsAsync(int voteId)
         {
             var vote = await this.votesRepository
                 .AllAsNoTracking()
                 .Where(v => v.Id == voteId)
-                .To<VoteViewModel>()
+                .To<VoteDetailsViewModel>()
                 .FirstOrDefaultAsync();
 
             if (vote == null || vote.IsActive)

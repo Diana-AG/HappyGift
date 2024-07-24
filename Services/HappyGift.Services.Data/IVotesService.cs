@@ -16,7 +16,7 @@
 
         Task<IEnumerable<VoteViewModel>> GetAllAsync(string userId);
 
-        Task<VoteViewModel> GetVoteResultsAsync(int voteId);
+        Task<VoteDetailsViewModel> GetVoteResultsAsync(int voteId);
 
         Task<IEnumerable<UserViewModel>> GetAvailableUsersForVotingAsync(string currentUserId);
     }
