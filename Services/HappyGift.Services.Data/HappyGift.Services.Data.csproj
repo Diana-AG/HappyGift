@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\HappyGift.Data.Common\HappyGift.Data.Common.csproj" />
     <ProjectReference Include="..\..\Data\HappyGift.Data.Models\HappyGift.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Web\HappyGift.Web.ViewModels\HappyGift.Web.ViewModels.csproj" />
     <ProjectReference Include="..\HappyGift.Services.Mapping\HappyGift.Services.Mapping.csproj" />
   </ItemGroup>
 

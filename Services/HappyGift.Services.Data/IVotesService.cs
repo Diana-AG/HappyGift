@@ -3,7 +3,8 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using HappyGift.Data.Models;
+    using HappyGift.Web.ViewModels.Users;
+    using HappyGift.Web.ViewModels.Votes;
 
     public interface IVotesService
     {
@@ -13,8 +14,10 @@
 
         Task EndVoteAsync(int voteId);
 
-        Task<IEnumerable<Vote>> GetActiveVotesAsync(string userId);
+        Task<IEnumerable<VoteViewModel>> GetAllAsync(string userId);
 
-        Task<Vote> GetVoteResultsAsync(int voteId);
+        Task<VoteViewModel> GetVoteResultsAsync(int voteId);
+
+        Task<IEnumerable<UserViewModel>> GetAvailableUsersForVotingAsync(string currentUserId);
     }
 }
