@@ -1,0 +1,47 @@
+﻿@model HappyGift.Web.ViewModels.Users.UsersListViewModel
+
+@{
+    ViewData["Title"] = "Start New Vote";
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+
+    @if (Model.Users.Any())
+    {
+        <form asp-action="StartVote" method="post">
+            <h3>Select a user to start a vote</h3>
+            <div class="form-group">
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Select</th>
+                            <th>Name</th>
+                            <th>Birth Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model.Users)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="radio" name="selectedUserId" value="@user.Id" />
+                                </td>
+                                <td>@user.Name</td>
+                                <td>@user.BirthDate.ToString("d")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Start Vote</button>
+            </div>
+        </form>
+    }
+    else
+    {
+        <p class="alert alert-warning">There are no available employees for starting a vote.</p>
+    }
+</div>

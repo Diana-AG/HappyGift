@@ -1,0 +1,29 @@
+﻿@model HappyGift.Web.ViewModels.Gifts.GiftsListViewModel
+
+@{
+    ViewData["Title"] = "Gifts";
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Gift ID</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var gift in this.Model.Gifts)
+                {
+                    <tr>
+                        <td>@gift.Id</td>
+                        <td>@gift.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

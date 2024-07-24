@@ -1,0 +1,68 @@
+﻿@model HappyGift.Web.ViewModels.Votes.VoteDetailsViewModel
+
+@{
+    ViewData["Title"] = "Vote Results";
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+
+    <div class="card">
+        <div class="card-header">
+            Vote ID: @Model.Id
+        </div>
+        <div class="card-body">
+            <p><strong>Empoyee:</strong> @Model.ForUserName</p>
+            <p><strong>Birthday:</strong> @Model.ForBirthdayDate.ToString("d MMMM yyyy", System.Globalization.CultureInfo.InvariantCulture)</p>
+            <p><strong>Started By:</strong> @Model.StartedByUserName</p>
+            <p><strong>Started On:</strong> @Model.CreatedOn.ToString("d MMMM yyyy", System.Globalization.CultureInfo.InvariantCulture)</p>
+            <p><strong>Ended At:</strong> @(Model.EndedAt.HasValue ? Model.EndedAt.Value.ToString("d MMMM yyyy", System.Globalization.CultureInfo.InvariantCulture) : "Ongoing")</p>
+
+            <p><strong>Total Voters:</strong> @Model.VotesCastCount</p>
+
+            <h3>Gift Vote Results</h3>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Gift</th>
+                            <th>Number of Votes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var result in Model.GiftVoteResults)
+                        {
+                            <tr>
+                                <td>@result.GiftName</td>
+                                <td>@result.VoteCastCount</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Votes by Users</h3>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Employee</th>
+                            <th>Gift Option</th>
+                            <th>Voting Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var userGift in Model.UsersGifts)
+                        {
+                            <tr>
+                                <td>@userGift.UserName</td>
+                                <td>@userGift.GiftName</td>
+                                <td>@userGift.CreatedOn</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

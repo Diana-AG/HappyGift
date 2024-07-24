@@ -1,0 +1,56 @@
+﻿@using System.Globalization
+@model HappyGift.Web.ViewModels.Votes.VotesListViewModel
+
+@{
+    ViewData["Title"] = "Votes";
+}
+<a asp-action="StartVote" class="btn btn-primary mb-4">Start New Vote</a>
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+
+    <div class="row">
+        @foreach (var vote in Model.Votes)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@vote.ForUserName</h5>
+                        <p class="card-text">
+                            <strong>Birthday:</strong> @vote.ForBirthdayDate.ToString("d MMMM yyyy", System.Globalization.CultureInfo.InvariantCulture)<br />                            
+                            <strong>Votes Cast:</strong> @vote.VotesCastCount<br />
+                            <strong>Status:</strong> @(vote.IsActive ? "Active" : "Ended")<br />                            
+                        </p>
+                        <div>
+                            @if (vote.IsActive)
+                            {
+                                if (!vote.HasCurrentUserVoted)
+                                {
+                                    <a class="btn btn-primary btn-sm" href="@Url.Action("VoteForGift", new { voteId = vote.Id })">
+                                        Vote
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="text-success">You have already voted</span>
+                                }
+                            }
+                            else
+                            {
+                                <a class="btn btn-secondary btn-sm" href="@Url.Action("VoteResults", new { voteId = vote.Id })">
+                                    View Results
+                                </a>
+                            }
+                        </div>
+                        @if (vote.IsActive && vote.StartedByUserId == Model.CurrentUserId)
+                        {
+                            <form asp-action="EndVote" method="post" class="mt-2">
+                                <input type="hidden" name="voteId" value="@vote.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">End Vote</button>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
