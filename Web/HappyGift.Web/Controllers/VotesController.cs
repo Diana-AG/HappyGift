@@ -37,29 +37,30 @@
             }
 
             var availableUsers = await this.votesService.GetAvailableUsersForVotingAsync(user.Id);
-
             var viewModel = new UsersListViewModel { Users = availableUsers };
-
             return this.View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> StartVote(string selectedUserId)
+        public async Task<IActionResult> StartVote(UsersListViewModel model)
         {
-            if (string.IsNullOrEmpty(selectedUserId))
+            var currentUser = await this.userManager.GetUserAsync(this.User);
+            if (!this.ModelState.IsValid)
             {
-                return this.BadRequest("No user selected.");
+                var availableUsers = await this.votesService.GetAvailableUsersForVotingAsync(currentUser.Id);
+                var viewModel = new UsersListViewModel { Users = availableUsers };
+                return this.View(viewModel);
             }
 
-            var currentUser = await this.userManager.GetUserAsync(this.User);
-            if (currentUser.Id == selectedUserId)
+            if (currentUser.Id == model.SelectedUserId)
             {
                 return this.BadRequest("You cannot start a vote for yourself.");
             }
 
             try
             {
-                await this.votesService.StartVoteAsync(currentUser.Id, selectedUserId);
+                await this.votesService.StartVoteAsync(currentUser.Id, model.SelectedUserId);
+                this.TempData["SuccessMessage"] = "The vote has been successfully started!";
             }
             catch (Exception ex)
             {
@@ -72,7 +73,15 @@
         public async Task<IActionResult> VoteForGift(int voteId)
         {
             var gifts = await this.giftsService.GetAllAsync<GiftViewModel>();
-            var model = new VoteForGiftViewModel { VoteId = voteId, Gifts = gifts };
+            var vote = await this.votesService.GetVoteByIdAsync<VoteDetailsViewModel>(voteId);
+
+            var model = new VoteForGiftViewModel
+            {
+                VoteId = voteId,
+                Gifts = gifts,
+                UserName = vote.ForUserName,
+            };
+
             return this.View(model);
         }
 
@@ -81,9 +90,18 @@
         {
             var user = await this.userManager.GetUserAsync(this.User);
 
+            if (giftId <= 0)
+            {
+                this.ModelState.AddModelError(string.Empty, "Please select a gift.");
+                var gifts = await this.giftsService.GetAllAsync<GiftViewModel>();
+                var model = new VoteForGiftViewModel { VoteId = voteId, Gifts = gifts };
+                return this.View(model);
+            }
+
             try
             {
                 await this.votesService.VoteForGiftAsync(voteId, user.Id, giftId);
+                this.TempData["SuccessMessage"] = "Your vote has been recorded.";
                 return this.RedirectToAction(nameof(this.Index));
             }
             catch (InvalidOperationException ex)
@@ -91,15 +109,16 @@
                 this.ModelState.AddModelError(string.Empty, ex.Message);
             }
 
-            var gifts = await this.giftsService.GetAllAsync<GiftViewModel>();
-            var model = new VoteForGiftViewModel { VoteId = voteId, Gifts = gifts };
-            return this.View(model);
+            var allGifts = await this.giftsService.GetAllAsync<GiftViewModel>();
+            var viewModel = new VoteForGiftViewModel { VoteId = voteId, Gifts = allGifts };
+            return this.View(viewModel);
         }
 
         [HttpPost]
         public async Task<IActionResult> EndVote(int voteId)
         {
             await this.votesService.EndVoteAsync(voteId);
+            this.TempData["SuccessMessage"] = "The vote has been successfully ended.";
             return this.RedirectToAction(nameof(this.Index));
         }
 

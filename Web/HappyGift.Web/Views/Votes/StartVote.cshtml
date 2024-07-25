@@ -1,23 +1,22 @@
-﻿@model HappyGift.Web.ViewModels.Users.UsersListViewModel
+﻿@using System.Globalization
+@model HappyGift.Web.ViewModels.Users.UsersListViewModel
 
 @{
     ViewData["Title"] = "Start New Vote";
 }
 
 <div class="container mt-4">
-    <h1>@ViewData["Title"]</h1>
-
     @if (Model.Users.Any())
     {
         <form asp-action="StartVote" method="post">
-            <h3>Select a user to start a vote</h3>
+            <h4>Select a colleague to start a gift vote for their upcoming birthday.</h4>
             <div class="form-group">
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th>Select</th>
                             <th>Name</th>
-                            <th>Birth Date</th>
+                            <th>Upcomming Birthday</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,15 +27,16 @@
                                     <input type="radio" name="selectedUserId" value="@user.Id" />
                                 </td>
                                 <td>@user.Name</td>
-                                <td>@user.BirthDate.ToString("d")</td>
+                                <td>@user.CommingBirthdayDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)</td>
                             </tr>
                         }
                     </tbody>
                 </table>
+                <span asp-validation-for="SelectedUserId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Start Vote</button>
+                <button type="submit" class="btn btn-success">Start Vote</button>
             </div>
         </form>
     }

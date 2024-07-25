@@ -1,31 +1,61 @@
 ﻿@using System.Globalization
+@using HappyGift.Web.Controllers
 @model HappyGift.Web.ViewModels.Votes.VotesListViewModel
 
 @{
     ViewData["Title"] = "Votes";
 }
-<a asp-action="StartVote" class="btn btn-primary mb-4">Start New Vote</a>
-<div class="container mt-4">
+
+<div class="text-center mt-4">
     <h1>@ViewData["Title"]</h1>
+    <div class="icon-container">
+        <span class="fas fa-gift" style="font-size: 38px; color: gray;"></span>
+        <span class="fas fa-birthday-cake" style="font-size: 38px; color: gray;"></span>
+    </div>
+</div>
+
+<div class="container mt-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    <a asp-action="StartVote" class="btn btn-success mb-4">Start New Vote</a>
 
     <div class="row">
         @foreach (var vote in Model.Votes)
         {
             <div class="col-md-4 mb-4">
                 <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">@vote.ForUserName</h5>
+                        @if (vote.IsActive && vote.StartedByUserId == Model.CurrentUserId)
+                        {
+                            <form asp-action="EndVote" method="post" class="mb-0">
+                                <input type="hidden" name="voteId" value="@vote.Id" />
+                                <button type="submit" class="btn btn-outline-secondary btn-sm end-vote-btn">End Vote</button>
+                            </form>
+                        }
+                    </div>
                     <div class="card-body">
-                        <h5 class="card-title">@vote.ForUserName</h5>
                         <p class="card-text">
-                            <strong>Birthday:</strong> @vote.ForBirthdayDate.ToString("d MMMM yyyy", System.Globalization.CultureInfo.InvariantCulture)<br />                            
+                            <strong>Birthday:</strong> @vote.ForBirthdayDate.ToString("d MMMM yyyy", CultureInfo.InvariantCulture)<br />
                             <strong>Votes Cast:</strong> @vote.VotesCastCount<br />
-                            <strong>Status:</strong> @(vote.IsActive ? "Active" : "Ended")<br />                            
+                            <strong>Status:</strong> @(vote.IsActive ? "Active" : "Ended")<br />
                         </p>
                         <div>
                             @if (vote.IsActive)
                             {
                                 if (!vote.HasCurrentUserVoted)
                                 {
-                                    <a class="btn btn-primary btn-sm" href="@Url.Action("VoteForGift", new { voteId = vote.Id })">
+                                    <a class="btn btn-success btn-sm" href="@Url.Action(nameof(VotesController.VoteForGift), new { voteId = vote.Id })">
                                         Vote
                                     </a>
                                 }
@@ -36,18 +66,11 @@
                             }
                             else
                             {
-                                <a class="btn btn-secondary btn-sm" href="@Url.Action("VoteResults", new { voteId = vote.Id })">
+                                <a class="btn btn-outline-secondary btn-sm" href="@Url.Action(nameof(VotesController.VoteResults), new { voteId = vote.Id })">
                                     View Results
                                 </a>
                             }
                         </div>
-                        @if (vote.IsActive && vote.StartedByUserId == Model.CurrentUserId)
-                        {
-                            <form asp-action="EndVote" method="post" class="mt-2">
-                                <input type="hidden" name="voteId" value="@vote.Id" />
-                                <button type="submit" class="btn btn-danger btn-sm">End Vote</button>
-                            </form>
-                        }
                     </div>
                 </div>
             </div>

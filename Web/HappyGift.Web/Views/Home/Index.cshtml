@@ -1,9 +1,16 @@
 ﻿@using HappyGift.Common
+@using HappyGift.Web.Controllers
 @{
     this.ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to @GlobalConstants.SystemName!</h1>    
+    <div class="mt-4">
+        <h3>Vote for a Gift!</h3>
+        <p class="lead">Participate in voting for a colleague's upcoming birthday gift, see all votes, or create a new one.</p>
+        <a href="@Url.Action(nameof(VotesController.Index), nameof(VotesController).Replace("Controller", ""))" class="btn btn-success btn-lg mt-2">
+            <i class="fas fa-gift"></i> Go to Votes
+        </a>
+    </div>
 </div>

@@ -101,7 +101,7 @@
             {
                 UserName = u.Name,
                 GiftName = u.VoteCasts.FirstOrDefault(vc => vc.VoteId == voteId)?.Gift?.Name ?? "Not Voted",
-                CreatedOn = u.VoteCasts.FirstOrDefault(vc => vc.VoteId == voteId)?.CreatedOn.ToString("d-MMMM-yyyy", CultureInfo.InvariantCulture) ?? string.Empty,
+                CreatedOn = u.VoteCasts.FirstOrDefault(vc => vc.VoteId == voteId)?.CreatedOn.ToString("d MMMM yyyy", CultureInfo.InvariantCulture) ?? string.Empty,
             });
 
             var giftOrder = giftVoteResults.Select((g, index) => new { g.GiftName, Index = index })
@@ -219,6 +219,11 @@
                 });
 
             return filteredUsers;
+        }
+
+        public async Task<T> GetVoteByIdAsync<T>(int voteId)
+        {
+            return await this.votesRepository.AllAsNoTracking().Where(v => v.Id == voteId).To<T>().FirstOrDefaultAsync();
         }
 
         private DateTime CalculateCommingBirthdayDate(DateTime birthDate)

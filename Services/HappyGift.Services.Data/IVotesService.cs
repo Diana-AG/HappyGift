@@ -14,9 +14,11 @@
 
         Task EndVoteAsync(int voteId);
 
-        Task<IEnumerable<VoteViewModel>> GetAllAsync(string userId);
+        Task<T> GetVoteByIdAsync<T>(int voteId);
 
         Task<VoteDetailsViewModel> GetVoteResultsAsync(int voteId);
+
+        Task<IEnumerable<VoteViewModel>> GetAllAsync(string userId);
 
         Task<IEnumerable<UserViewModel>> GetAvailableUsersForVotingAsync(string currentUserId);
     }
